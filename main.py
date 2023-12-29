@@ -5,12 +5,13 @@ import os
 os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
 
 if __name__ == "__main__":
-    # ext = Extraction()
+    ext = Extraction()
     while True:
         inp = input("Input: ")
         inp = eval(inp)
         inp = [i['user'] for i in inp]
-        print(' '.join(inp))
-        # ans = ext.extract(inp)
-        # ans = ans.split('->')[-1]
-        # print(ans)
+        inp = ' '.join(inp)
+        # print(' '.join(inp))
+        ans = ext.extract(inp)
+        ans = ans.split('->')[-1]
+        print(ans)
