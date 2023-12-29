@@ -8,7 +8,6 @@ if __name__ == "__main__":
     # ext = Extraction()
     while True:
         inp = input("Input: ")
-        inp = inp.strip('"')
         inp = eval(inp)
         inp = [i['user'] for i in inp]
         print(' '.join(inp))
