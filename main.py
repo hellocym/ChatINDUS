@@ -1,4 +1,4 @@
-from extraction import Extraction
+from extraction.Baichuan2 import Extraction
 
 # use hf mirror site
 import os
