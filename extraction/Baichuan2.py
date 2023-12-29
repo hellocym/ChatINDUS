@@ -6,7 +6,7 @@ class Extraction:
         self.tokenizer = AutoTokenizer.from_pretrained("baichuan-inc/Baichuan2-7B-Base", trust_remote_code=True)
         self.model = AutoModelForCausalLM.from_pretrained("baichuan-inc/Baichuan2-7B-Base", torch_dtype=torch.float16, trust_remote_code=True)
         self.model = self.model.quantize(4).cuda()
-        self.example_input = "{'user': '你好，我想要采购一个O型圈但不太确定具体型号', 'agent': '您好！请问您的产品规格和尺寸是什么？这样我才能为您推荐合适的O型圈。'}, {'user': '我需要一个应用于橡塑成形密封圈', 'agent': '好的，请告诉我产品的材料、工作温度范围以及是否具有耐磨性等要求，以便我为您提供更准确的建议。'}, {'user': '内径:64.4, 材质:10, 横截面直径:3.1'}"
+        self.example_input = "{'user': '你好，我想要采购一个O型圈但不太确定具体型号', 'agent': '您好！请问您的产品规格和尺寸是什么？这样我才能为您推荐合适的O型圈。'}, {'user': '我需要一个应用于橡塑成形密封圈', 'agent': '好的，请告诉我产品的材料、工作温度范围以及是否具有耐磨性等要求，以便我为您提供更准确的建议。'}, {'user': '内径:64.4, 材质:10, 横截面直径:3.1', 'agent': '根据您提供的参数，以下是一些可能适合的产品：\n\n1. Viton O型圈(Viton是一种氟聚合物，适用于高温、高压和化学环境)\n2. NBR O型圈(NBR是一种丁腈橡胶，适用于中等压力和温度环境)\n3. Silicone O型圈(硅橡胶适用于低温、高湿度和食品级应用)\n\n由于没有具体的品牌或供应商信息，以上仅为参考建议。如果您能提供更多详细信息，例如所需的工作条件、寿命要求等，我们将能够更好地帮助您选择合适的产品。'}"
         self.example_output = '''{
 "品类要求": "橡塑成形密封",
 "技术属性要求": {
