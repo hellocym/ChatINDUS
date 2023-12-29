@@ -2,7 +2,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 tokenizer = AutoTokenizer.from_pretrained("baichuan-inc/Baichuan2-7B-Base", trust_remote_code=True)
 model = AutoModelForCausalLM.from_pretrained("baichuan-inc/Baichuan2-7B-Base", torch_dtype=torch.float16, trust_remote_code=True)
-model = model.quantize(8).cuda()
+model = model.quantize(4).cuda()
 
 example_input = "{'user': '你好，我想要采购一个O型圈但不太确定具体型号', 'agent': '您好！请问您的产品规格和尺寸是什么？这样我才能为您推荐合适的O型圈。'}, {'user': '我需要一个应用于橡塑成形密封圈', 'agent': '好的，请告诉我产品的材料、工作温度范围以及是否具有耐磨性等要求，以便我为您提供更准确的建议。'}, {'user': '内径:64.4, 材质:10, 横截面直径:3.1'}"
 example_output = '''{
