@@ -8,4 +8,6 @@ if __name__ == "__main__":
     ext = Extraction()
     while True:
         inp = input("Input: ")
-        print(ext.extract(inp))
+        ans = ext.extract(inp)
+        ans = ans.split('->')[-1]
+        print(ans)
