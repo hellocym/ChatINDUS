@@ -12,7 +12,7 @@ if __name__ == "__main__":
         inp = eval(inp)
         inp = [i['user'] for i in inp]
         inp = ' '.join(inp)
-        # print(' '.join(inp))
+        print(inp)
         ans = ext.extract(inp)
         ans = ans.split('->')[-1]
         print(ans)
