@@ -1,6 +1,9 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+import os
+os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
+
 class Extraction:
     def __init__(self):
         self.tokenizer = AutoTokenizer.from_pretrained("baichuan-inc/Baichuan2-13B-Base", trust_remote_code=True)
