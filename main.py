@@ -1,5 +1,6 @@
 # from extraction.Baichuan2 import Extraction
 from extraction.XVERSE import Extraction
+from 
 
 # # use hf mirror site
 # import os
@@ -16,4 +17,5 @@ if __name__ == "__main__":
         # inp = ' '.join(inp)
         print(inp)
         ans = ext.extract(inp)
+
         print(ans)
