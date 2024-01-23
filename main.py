@@ -1,8 +1,9 @@
-from extraction.Baichuan2 import Extraction
+# from extraction.Baichuan2 import Extraction
+from extraction.XVERSE import Extraction
 
-# use hf mirror site
-import os
-os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
+# # use hf mirror site
+# import os
+# os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
 
 if __name__ == "__main__":
     ext = Extraction()
@@ -15,5 +16,4 @@ if __name__ == "__main__":
         inp = ' '.join(inp)
         print(inp)
         ans = ext.extract(inp)
-        ans = ans.split('->')[-1]
         print(ans)
