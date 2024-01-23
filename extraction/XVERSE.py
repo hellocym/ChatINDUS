@@ -9,7 +9,16 @@ model = AutoModelForCausalLM.from_pretrained(model_dir, trust_remote_code=True, 
 model.generation_config = GenerationConfig.from_pretrained(model_dir)
 model = model.eval()
 
-prompt = '请根据示例提取文本中的工业品信息\n示例：\n输入：你好，我想要采购一个O型圈但不太确定具体型号 我需要一个应用于橡塑成形密封圈 内径:64.4, 材质:10, 横截面直径:3.1\n输出：{"品类要求": "橡塑成形密封","技术属性要求": {"内径": "64.4","材质": "10","横截面直径": "3.1"}}\n输入：你好，我想要采购一个单列深沟球轴承但不太确定具体型号 我需要一个滚动轴承 内径:35, 外径:80, 宽度:21\n输出：'
+prompt = '请根据示例提取文本中的工业品信息\n示例：\n'
+egs = [
+    '输入：你好，我想要采购一个O型圈但不太确定具体型号 我需要一个应用于橡塑成形密封圈 内径:64.4, 材质:10, 横截面直径:3.1',
+    '输出：{"品类要求": "橡塑成形密封","技术属性要求": {"内径": "64.4","材质": "10","横截面直径": "3.1"}}',
+]
+for eg in egs:
+    prompt += eg + '\n'
+prompt += '输入：'
+inp = input('输入：')
+prompt += inp
 
 history = [{"role": "user", "content": prompt}]
 response = model.chat(tokenizer, history)
