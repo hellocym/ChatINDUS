@@ -19,7 +19,7 @@ class Extraction:
             self.prompt += eg + '\n'
 
     def extract(self, inp):
-        p = self.prompt + '输入：' + inp
+        p = self.prompt + '输入：' + inp + '\n输出：'
         history = [{"role": "user", "content": p}]
         response = self.model.chat(self.tokenizer, history)
         return response
