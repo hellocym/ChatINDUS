@@ -5,7 +5,7 @@ from modelscope import GenerationConfig
 class Extraction:
     def __init__(self):
         model_dir = snapshot_download('xverse/XVERSE-7B-Chat',revision = 'v1.0.0')
-        tokenizer = AutoTokenizer.from_pretrained(model_dir)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_dir)
         model = AutoModelForCausalLM.from_pretrained(model_dir, trust_remote_code=True, torch_dtype=torch.bfloat16, device_map='auto')
         model.generation_config = GenerationConfig.from_pretrained(model_dir)
         self.model = model.eval()
@@ -21,5 +21,5 @@ class Extraction:
     def extract(self, inp):
         p = self.prompt + '输入：' + inp
         history = [{"role": "user", "content": p}]
-        response = self.model.chat(tokenizer, history)
+        response = self.model.chat(self.tokenizer, history)
         return response
