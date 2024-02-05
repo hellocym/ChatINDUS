@@ -64,7 +64,7 @@ print('\033[93m' + 'Data Loaded' + '\033[0m')
 #         COMMODITY_SPECIFIC_str = row['COMMODITY_SPECIFIC']
 #         COMMODITY_SPECIFIC_nested = []
 #         if COMMODITY_SPECIFIC_str != '':
-#             COMMODITY_SPECIFIC_list = eval(COMMODITY_SPECIFIC_str)
+#             COMMODITY_SPECIFIC_list = 0(COMMODITY_SPECIFIC_str)
 #             for COMMODITY_SPECIFIC in COMMODITY_SPECIFIC_list:
 #                 if COMMODITY_SPECIFIC['paramName'] != '' and COMMODITY_SPECIFIC['paramValue'] != '':
 #                     COMMODITY_SPECIFIC_nested.append(

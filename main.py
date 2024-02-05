@@ -1,6 +1,6 @@
 # from extraction.Baichuan2 import Extraction
 from extraction.XVERSE import Extraction
-from 
+# from 
 
 # # use hf mirror site
 # import os
