@@ -67,6 +67,7 @@ if __name__ == '__main__':
     # 获取满足品类要求的所有记录中前10条记录
     results = cur.fetchall()
     results = results[:10]
+    print(results)
     
     cur.close()
     conn.close()
