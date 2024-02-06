@@ -54,21 +54,32 @@ if __name__ == '__main__':
 
     Info("Data loaded")
 
-    query = {
-    "品类要求": "滚动轴承",
-    "技术属性要求": {"内径": "35", "外径": "80", "宽度": "21"}
-    }
+    # 查询表的前五行数据
+    cur.execute("SELECT * FROM commodities LIMIT 5;")
 
-    Info("Querying class...")
-    sql = """
-    SELECT * FROM commodities
-    WHERE CLASS_NAME LIKE %s
-    """
-    cur.execute(sql, ('%' + query["品类要求"] + '%',))
+    # 获取查询结果
+    rows = cur.fetchall()
 
-    # 获取满足品类要求的所有记录
-    results = cur.fetchall()
-    print(results)
+    # 打印结果
+    for row in rows:
+        print(row)
+
+
+    # query = {
+    # "品类要求": "滚动轴承",
+    # "技术属性要求": {"内径": "35", "外径": "80", "宽度": "21"}
+    # }
+
+    # Info("Querying class...")
+    # sql = """
+    # SELECT * FROM commodities
+    # WHERE CLASS_NAME LIKE %s
+    # """
+    # cur.execute(sql, ('%' + query["品类要求"] + '%',))
+
+    # # 获取满足品类要求的所有记录
+    # results = cur.fetchall()
+    # print(results)
     
     cur.close()
     conn.close()
