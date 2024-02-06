@@ -63,26 +63,34 @@ if __name__ == '__main__':
     # 筛选
     Info("Querying...")
 
+    # cur.execute("""
+    #     SELECT * FROM commodities
+    #     WHERE CLASS_NAME LIKE %s
+    #     AND EXISTS (
+    #         SELECT 1
+    #         FROM jsonb_array_elements(commodity_specific) AS cs(item)
+    #         WHERE item->>'paramName' = '内径' AND item->>'paramValue' = %s
+    #     )
+    #     AND EXISTS (
+    #         SELECT 1
+    #         FROM jsonb_array_elements(commodity_specific) AS cs(item)
+    #         WHERE item->>'paramName' = '外径' AND item->>'paramValue' = %s
+    #     )
+    #     AND EXISTS (
+    #         SELECT 1
+    #         FROM jsonb_array_elements(commodity_specific) AS cs(item)
+    #         WHERE item->>'paramName' = '宽度' AND item->>'paramValue' = %s
+    #     );
+    # """, (query["品类要求"], query["技术属性要求"]["内径"], query["技术属性要求"]["外径"], query["技术属性要求"]["宽度"]))
+    # # cur.execute(sql, ('%' + query["品类要求"] + '%', query["技术属性要求"]["内径"], query["技术属性要求"]["外径"]))
+
     cur.execute("""
         SELECT * FROM commodities
-        WHERE CLASS_NAME LIKE %s
-        AND EXISTS (
-            SELECT 1
-            FROM jsonb_array_elements(commodity_specific) AS cs(item)
-            WHERE item->>'paramName' = '内径' AND item->>'paramValue' = %s
-        )
-        AND EXISTS (
-            SELECT 1
-            FROM jsonb_array_elements(commodity_specific) AS cs(item)
-            WHERE item->>'paramName' = '外径' AND item->>'paramValue' = %s
-        )
-        AND EXISTS (
-            SELECT 1
-            FROM jsonb_array_elements(commodity_specific) AS cs(item)
-            WHERE item->>'paramName' = '宽度' AND item->>'paramValue' = %s
-        );
-    """, (query["品类要求"], query["技术属性要求"]["内径"], query["技术属性要求"]["外径"], query["技术属性要求"]["宽度"]))
-    # cur.execute(sql, ('%' + query["品类要求"] + '%', query["技术属性要求"]["内径"], query["技术属性要求"]["外径"]))
+        WHERE CLASS_NAME LIKE %s;
+    """, query["品类要求"])
+    
+
+
 
     # 获取满足品类要求的所有记录中前3条记录
     results = cur.fetchall()
