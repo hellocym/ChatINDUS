@@ -18,21 +18,21 @@ def load_data():
             )
         """)
 
-        cur.execute("""
-        CREATE TEMP TABLE IF NOT EXISTS temp_commodities (LIKE commodities);
-    """)
+    #     cur.execute("""
+    #     CREATE TEMP TABLE IF NOT EXISTS temp_commodities (LIKE commodities);
+    # """)
         
         with open('data/commodity.csv', 'r') as f:
-            cur.copy_expert("COPY temp_commodities FROM STDIN WITH CSV HEADER", f)
+            cur.copy_expert("COPY commodities FROM STDIN WITH CSV HEADER", f)
         
-        cur.execute("""
-            INSERT INTO commodities (COMMODITY_CODE, COMMODITY_NAME, TYPE_GAUGE, CLASS_NAME, CLASS_CODE, COMMODITY_SPECIFIC)
-            SELECT COMMODITY_CODE, COMMODITY_NAME, TYPE_GAUGE, CLASS_NAME, CLASS_CODE, COMMODITY_SPECIFIC
-            FROM temp_commodities
-            WHERE NOT EXISTS (
-                SELECT 1 FROM commodities WHERE commodities.COMMODITY_CODE = temp_commodities.COMMODITY_CODE
-            );
-        """)
+        # cur.execute("""
+        #     INSERT INTO commodities (COMMODITY_CODE, COMMODITY_NAME, TYPE_GAUGE, CLASS_NAME, CLASS_CODE, COMMODITY_SPECIFIC)
+        #     SELECT COMMODITY_CODE, COMMODITY_NAME, TYPE_GAUGE, CLASS_NAME, CLASS_CODE, COMMODITY_SPECIFIC
+        #     FROM temp_commodities
+        #     WHERE NOT EXISTS (
+        #         SELECT 1 FROM commodities WHERE commodities.COMMODITY_CODE = temp_commodities.COMMODITY_CODE
+        #     );
+        # """)
         conn.commit()  # 提交更改
 
 
