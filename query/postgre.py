@@ -3,10 +3,14 @@ from psycopg2 import sql
 import pandas as pd
 import csv
 
+def Info(*args):
+    print('\033[93m' + ' '.join([str(arg) for arg in args]) + '\033[0m')
+
 if __name__ == '__main__':
     import os
+    Info("Starting Postgresql service...")
     os.system("service postgresql start")
-    print("Postgres started")
+    Info("Postgres started")
 
     conn = psycopg2.connect(
         dbname="postgres",
@@ -18,17 +22,25 @@ if __name__ == '__main__':
 
     cur = conn.cursor()
 
-    # cur.execute("""
-    #     CREATE TABLE IF NOT EXISTS commodities (
-    #         commodity_code BIGINT PRIMARY KEY,
-    #         commodity_name VARCHAR(255),
-    #         type_gauge VARCHAR(255),
-    #         class_name VARCHAR(255),
-    #         class_code VARCHAR(255),
-    #         commodity_specific JSON
-    #     )
-    # """)
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS commodities (
+            commodity_code BIGINT PRIMARY KEY,
+            commodity_name VARCHAR(255),
+            type_gauge TEXT,
+            class_name VARCHAR(255),
+            class_code VARCHAR(50),
+            commodity_specific JSONB
+        )
+    """)
 
+    cur.execute("""
+    CREATE TEMP TABLE temp_commodities LIKE commodities;
+""")
+    
+    with open('data/commodity.csv', 'r') as f:
+        cur.copy_expert("COPY temp_commodities FROM STDIN WITH CSV HEADER", f)
+
+    Info("Data loaded")
     # with open('data/commodity.csv', 'r', encoding='utf-8') as file:
     #     reader = csv.reader(file)
     #     next(reader)  # 跳过标题行
