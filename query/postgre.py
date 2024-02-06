@@ -69,11 +69,19 @@ if __name__ == '__main__':
     AND EXISTS (
         SELECT 1
         FROM jsonb_array_elements(commodity_specific) AS cs(item)
-        WHERE (item->>'paramName' = '内径' AND item->>'paramValue' = '60')
-        AND (item->>'paramName' = '外径' AND item->>'paramValue' = '107.7')
+        WHERE (item->>'paramName' = '内径' AND item->>'paramValue' = %s)
+    AND EXISTS (
+        SELECT 1
+        FROM jsonb_array_elements(commodity_specific) AS cs(item)
+        WHERE (item->>'paramName' = '外径' AND item->>'paramValue' = %s)
+    )
+    AND EXISTS (
+        SELECT 1
+        FROM jsonb_array_elements(commodity_specific) AS cs(item)
+        WHERE (item->>'paramName' = '宽度' AND item->>'paramValue' = %s)
     );
     """
-    cur.execute(sql, ('%' + query["品类要求"] + '%',))
+    cur.execute(sql, query["品类要求"], query["技术属性要求"]["内径"], query["技术属性要求"]["外径"], query["技术属性要求"]["宽度"])
     # cur.execute(sql, ('%' + query["品类要求"] + '%', query["技术属性要求"]["内径"], query["技术属性要求"]["外径"]))
 
     # 获取满足品类要求的所有记录中前3条记录
