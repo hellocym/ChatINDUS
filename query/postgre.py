@@ -69,6 +69,7 @@ if __name__ == '__main__':
         SELECT 1
         FROM jsonb_array_elements(commodity_specific) AS cs(item)
         WHERE (item->>'paramName' = '内径' AND item->>'paramValue' = '60')
+        AND (item->>'paramName' = '外径' AND item->>'paramValue' = '80')
     );
     """
     cur.execute(sql, ('%' + query["品类要求"] + '%',))
