@@ -44,6 +44,8 @@ if __name__ == '__main__':
 
     cur = conn.cursor()
 
+    cur.execute("DROP TABLE IF EXISTS commodities;")
+
     # 如果没有表则创建表
     table_name = 'commodities'
     cur.execute("SELECT EXISTS (SELECT FROM pg_tables WHERE tablename = %s);", (table_name,))
