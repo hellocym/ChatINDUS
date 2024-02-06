@@ -19,12 +19,13 @@ def load_data():
         """)
 
         cur.execute("""
-        CREATE TEMP TABLE temp_commodities (LIKE commodities);
+        CREATE TEMP TABLE IF NOT EXISTS temp_commodities (LIKE commodities);
     """)
         
         with open('data/commodity.csv', 'r') as f:
             cur.copy_expert("COPY temp_commodities FROM STDIN WITH CSV HEADER", f)
 
+        conn.commit()  # 提交更改
 
 
 if __name__ == '__main__':
@@ -43,6 +44,14 @@ if __name__ == '__main__':
 
     cur = conn.cursor()
 
+    # 如果没有表则创建表
+    table_name = 'commodities'
+    cur.execute("SELECT EXISTS (SELECT FROM pg_tables WHERE tablename = %s);", (table_name,))
+    table_exists = cur.fetchone()[0]
+    if not table_exists:
+        Info("Start loading data...")
+        load_data()
+
     Info("Data loaded")
 
     query = {
@@ -60,3 +69,6 @@ if __name__ == '__main__':
     # 获取满足品类要求的所有记录
     results = cur.fetchall()
     print(results)
+    
+    cur.close()
+    conn.close()
