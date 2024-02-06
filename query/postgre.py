@@ -34,7 +34,7 @@ if __name__ == '__main__':
     """)
 
     cur.execute("""
-    CREATE TEMP TABLE temp_commodities LIKE commodities;
+    CREATE TEMP TABLE temp_commodities (LIKE commodities);
 """)
     
     with open('data/commodity.csv', 'r') as f:
