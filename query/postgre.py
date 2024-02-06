@@ -18,21 +18,9 @@ def load_data():
             )
         """)
 
-    #     cur.execute("""
-    #     CREATE TEMP TABLE IF NOT EXISTS temp_commodities (LIKE commodities);
-    # """)
-        
         with open('data/commodity.csv', 'r') as f:
             cur.copy_expert("COPY commodities FROM STDIN WITH CSV HEADER", f)
         
-        # cur.execute("""
-        #     INSERT INTO commodities (COMMODITY_CODE, COMMODITY_NAME, TYPE_GAUGE, CLASS_NAME, CLASS_CODE, COMMODITY_SPECIFIC)
-        #     SELECT COMMODITY_CODE, COMMODITY_NAME, TYPE_GAUGE, CLASS_NAME, CLASS_CODE, COMMODITY_SPECIFIC
-        #     FROM temp_commodities
-        #     WHERE NOT EXISTS (
-        #         SELECT 1 FROM commodities WHERE commodities.COMMODITY_CODE = temp_commodities.COMMODITY_CODE
-        #     );
-        # """)
         conn.commit()  # 提交更改
 
 
@@ -64,32 +52,21 @@ if __name__ == '__main__':
 
     Info("Data loaded")
 
-    # 查询表的前五行数据
-    cur.execute("SELECT * FROM commodities LIMIT 5;")
+    query = {
+    "品类要求": "滚动轴承",
+    "技术属性要求": {"内径": "35", "外径": "80", "宽度": "21"}
+    }
 
-    # 获取查询结果
-    rows = cur.fetchall()
+    Info("Querying class...")
+    sql = """
+    SELECT * FROM commodities
+    WHERE CLASS_NAME LIKE %s
+    """
+    cur.execute(sql, ('%' + query["品类要求"] + '%',))
 
-    # 打印结果
-    for row in rows:
-        print(row)
-
-
-    # query = {
-    # "品类要求": "滚动轴承",
-    # "技术属性要求": {"内径": "35", "外径": "80", "宽度": "21"}
-    # }
-
-    # Info("Querying class...")
-    # sql = """
-    # SELECT * FROM commodities
-    # WHERE CLASS_NAME LIKE %s
-    # """
-    # cur.execute(sql, ('%' + query["品类要求"] + '%',))
-
-    # # 获取满足品类要求的所有记录
-    # results = cur.fetchall()
-    # print(results)
+    # 获取满足品类要求的所有记录中前10条记录
+    results = cur.fetchall()
+    results = results[:10]
     
     cur.close()
     conn.close()
