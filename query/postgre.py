@@ -70,6 +70,7 @@ if __name__ == '__main__':
             SELECT 1
             FROM jsonb_array_elements(commodity_specific) AS cs(item)
             WHERE item->>'paramName' = '内径' AND item->>'paramValue' = %s
+        )
         AND EXISTS (
             SELECT 1
             FROM jsonb_array_elements(commodity_specific) AS cs(item)
