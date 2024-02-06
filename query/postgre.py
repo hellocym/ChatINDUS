@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 from psycopg2 import sql
 import pandas as pd
 import csv
@@ -38,7 +39,7 @@ if __name__ == '__main__':
         port="5432"
     )
 
-    cur = conn.cursor()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     cur.execute("DROP TABLE IF EXISTS commodities;")
 
@@ -57,17 +58,29 @@ if __name__ == '__main__':
     "技术属性要求": {"内径": "35", "外径": "80", "宽度": "21"}
     }
 
-    Info("Querying class...")
+
+    # 筛选
+    Info("Querying...")
+
     sql = """
     SELECT * FROM commodities
     WHERE CLASS_NAME LIKE %s
+    AND EXISTS (
+        SELECT 1
+        FROM jsonb_array_elements(commodity_specific) AS cs(item)
+        WHERE (item->>'paramName' = '内径' AND item->>'paramValue' = '60')
+    );
     """
     cur.execute(sql, ('%' + query["品类要求"] + '%',))
 
-    # 获取满足品类要求的所有记录中前10条记录
+    # 获取满足品类要求的所有记录中前3条记录
     results = cur.fetchall()
-    results = results[:10]
+    results = results[:3]
     print(results)
-    
+
+
+
+
+
     cur.close()
     conn.close()
