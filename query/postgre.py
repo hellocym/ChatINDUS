@@ -87,7 +87,7 @@ if __name__ == '__main__':
     cur.execute("""
         SELECT * FROM commodities
         WHERE CLASS_NAME LIKE %s;
-    """, query["品类要求"])
+    """, (query["品类要求"],))
     
 
 
