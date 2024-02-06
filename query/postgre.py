@@ -6,6 +6,27 @@ import csv
 def Info(*args):
     print('\033[93m' + ' '.join([str(arg) for arg in args]) + '\033[0m')
 
+def load_data():
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS commodities (
+                commodity_code VARCHAR PRIMARY KEY,
+                commodity_name VARCHAR(255),
+                type_gauge TEXT,
+                class_name VARCHAR(255),
+                class_code VARCHAR(50),
+                commodity_specific JSONB
+            )
+        """)
+
+        cur.execute("""
+        CREATE TEMP TABLE temp_commodities (LIKE commodities);
+    """)
+        
+        with open('data/commodity.csv', 'r') as f:
+            cur.copy_expert("COPY temp_commodities FROM STDIN WITH CSV HEADER", f)
+
+
+
 if __name__ == '__main__':
     import os
     Info("Starting Postgresql service...")
@@ -22,31 +43,20 @@ if __name__ == '__main__':
 
     cur = conn.cursor()
 
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS commodities (
-            commodity_code VARCHAR PRIMARY KEY,
-            commodity_name VARCHAR(255),
-            type_gauge TEXT,
-            class_name VARCHAR(255),
-            class_code VARCHAR(50),
-            commodity_specific JSONB
-        )
-    """)
-
-    cur.execute("""
-    CREATE TEMP TABLE temp_commodities (LIKE commodities);
-""")
-    
-    with open('data/commodity.csv', 'r') as f:
-        cur.copy_expert("COPY temp_commodities FROM STDIN WITH CSV HEADER", f)
-
     Info("Data loaded")
-    # with open('data/commodity.csv', 'r', encoding='utf-8') as file:
-    #     reader = csv.reader(file)
-    #     next(reader)  # 跳过标题行
-    #     for row in reader:
-    #         cur.execute("""
-    #             INSERT INTO commodities (commodity_code, commodity_name, type_gauge, class_name, class_code, commodity_specific)
-    #             VALUES (%s, %s, %s, %s, %s, %s)
-    #             ON CONFLICT (commodity_code) DO NOTHING
-    #         """, row)
+
+    query = {
+    "品类要求": "滚动轴承",
+    "技术属性要求": {"内径": "35", "外径": "80", "宽度": "21"}
+    }
+
+    Info("Querying class...")
+    sql = """
+    SELECT * FROM commodities
+    WHERE CLASS_NAME LIKE %s
+    """
+    cur.execute(sql, ('%' + query["品类要求"] + '%',))
+
+    # 获取满足品类要求的所有记录
+    results = cur.fetchall()
+    print(results)
