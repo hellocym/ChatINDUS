@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     cur.execute("""
         CREATE TABLE IF NOT EXISTS commodities (
-            commodity_code BIGINT PRIMARY KEY,
+            commodity_code VARCHAR PRIMARY KEY,
             commodity_name VARCHAR(255),
             type_gauge TEXT,
             class_name VARCHAR(255),
