@@ -94,7 +94,8 @@ if __name__ == '__main__':
     # 获取满足品类要求的所有记录中前3条记录
     results = cur.fetchall()
     results = results[:3]
-    print(results)
+    for result in results:
+        print(result)
 
 
 
