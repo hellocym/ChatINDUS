@@ -53,9 +53,10 @@ if __name__ == '__main__':
 
     Info("Data loaded")
 
+
     query = {
     "品类要求": "滚动轴承",
-    "技术属性要求": {"内径": "35", "外径": "80", "宽度": "21"}
+    "技术属性要求": {"内径": input('内径'), "外径": input('外径'), "宽度": input('宽度')}
     }
 
 
@@ -68,11 +69,12 @@ if __name__ == '__main__':
     AND EXISTS (
         SELECT 1
         FROM jsonb_array_elements(commodity_specific) AS cs(item)
-        WHERE (item->>'paramName' = '内径' AND item->>'paramValue' = '60')
-        AND (item->>'paramName' = '外径' AND item->>'paramValue' = '80')
+        WHERE (item->>'paramName' = '内径' AND item->>'paramValue' = %s)
+        AND (item->>'paramName' = '外径' AND item->>'paramValue' = %s)
     );
     """
-    cur.execute(sql, ('%' + query["品类要求"] + '%',))
+    # cur.execute(sql, ('%' + query["品类要求"] + '%',))
+    cur.execute(sql, ('%' + query["品类要求"] + '%', query["技术属性要求"]["内径"], query["技术属性要求"]["外径"]))
 
     # 获取满足品类要求的所有记录中前3条记录
     results = cur.fetchall()
