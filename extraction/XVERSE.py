@@ -1,7 +1,7 @@
 import torch
 from modelscope import AutoTokenizer, AutoModelForCausalLM,snapshot_download
 from modelscope import GenerationConfig
-from jsonformer import JsonFormer
+from jsonformer import Jsonformer
 
 class Extraction:
     def __init__(self):
