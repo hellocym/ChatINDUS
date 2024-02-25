@@ -1,6 +1,7 @@
 import torch
 from modelscope import AutoTokenizer, AutoModelForCausalLM,snapshot_download
 from modelscope import GenerationConfig
+from jsonformer import JsonFormer
 
 class Extraction:
     def __init__(self):
@@ -20,6 +21,21 @@ class Extraction:
         ]
         for eg in egs:
             self.prompt += eg + '\n'
+        
+        # 技术属性要求的键值对数量不定
+
+        self.json_schema = {
+            "type": "object",
+            "properties": {
+                "品类要求": {"type": "string"},
+                "技术属性要求": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
 
     def extract(self, inp):
         p = self.prompt + '输入：' + inp + '\n输出：'

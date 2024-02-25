@@ -18,7 +18,9 @@ if __name__ == "__main__":
         # inp = eval(inp)
         # inp = [i['user'] for i in inp]
         # inp = ' '.join(inp)
-        print(inp)
+        # print(inp)
+        
         ans = ext.extract(inp)
+        print(ans)
         db.query(ans)
         
