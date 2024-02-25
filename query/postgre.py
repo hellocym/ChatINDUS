@@ -60,6 +60,8 @@ class Postgre:
             WHERE CLASS_NAME LIKE '%{class_name}%'
         """
         for k, v in param_dict.items():
+            # 去除单位
+            v = v.split(' ')[0]
             sql_query += f"""
                 AND EXISTS (
                     SELECT 1
