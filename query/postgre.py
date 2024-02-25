@@ -66,8 +66,9 @@ class Postgre:
                     FROM jsonb_array_elements(commodity_specific) AS cs(item)
                     WHERE item->>'paramName' = '{k}' AND item->>'paramValue' = '{v}'
                 )
-            """
+        """
         sql_query += ";"
+        
         self.cur.execute(sql_query)
         # self.cur.execute("""
         #     SELECT * FROM commodities
@@ -146,7 +147,7 @@ if __name__ == '__main__':
 
 
     query = {
-    "品类要求": "滚动轴承",
+    "品类要求": input('品类要求: '),
     "技术属性要求": {"内径": input('内径: '), "外径": input('外径: '), "宽度": input('宽度: ')}
     }
 
