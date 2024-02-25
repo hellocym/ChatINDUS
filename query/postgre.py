@@ -4,6 +4,7 @@ from psycopg2 import sql
 import pandas as pd
 import csv
 import os
+import json
 
 class Postgre:
     def __init__(self):
@@ -50,7 +51,7 @@ class Postgre:
         # 有时候技术属性要求会出现未知，所以要判断是否存在
         # 筛选
         # convert query to dict
-        query = eval(query)
+        query = json.loads(query)
         class_name = query["品类要求"]
         param_dict = query["技术属性要求"]
         param_dict = {k: v for k, v in param_dict.items() if v!="未知"}
