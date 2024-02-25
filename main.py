@@ -1,6 +1,7 @@
 import os
 
 from extraction.XVERSE import Extraction
+from query.postgre import Postgre
 
 # use hf mirror site
 # os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
@@ -8,8 +9,8 @@ from extraction.XVERSE import Extraction
 
 if __name__ == "__main__":
     ext = Extraction()
-    os.system("service postgresql start")
-    print("Postgres started")
+    db = Postgre()
+    
     while True:
         inp = input("Input: ")
         # inp = inp.strip(',')
@@ -19,5 +20,5 @@ if __name__ == "__main__":
         # inp = ' '.join(inp)
         print(inp)
         ans = ext.extract(inp)
-        print(ans)
+        db.query(ans)
         
