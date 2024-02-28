@@ -46,7 +46,8 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         del ext
         del db
+        
+        torch.cuda.empty_cache()
         print("vram released")
-        print(torch.cuda.memory_summary(device=None, abbreviated=False)
         
         
