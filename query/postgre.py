@@ -116,8 +116,15 @@ def load_data():
                 commodity_specific JSONB
             )
         """)
+        current_script_path = os.path.abspath(__file__)
 
-        with open('data/commodity.csv', 'r') as f:
+        # 获取当前脚本所在目录的路径
+        current_dir = os.path.dirname(current_script_path)
+
+        # 构建commodity.csv文件的绝对路径
+        commodity_csv_path = os.path.join(current_dir, 'data', 'commodity.csv')
+
+        with open(commodity_csv_path, 'r') as f:
             cur.copy_expert("COPY commodities FROM STDIN WITH CSV HEADER", f)
         
         conn.commit()  # 提交更改
