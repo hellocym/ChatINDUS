@@ -6,13 +6,8 @@ import csv
 import os
 import json
 
-current_script_path = os.path.abspath(__file__)
 
-# 获取当前脚本所在目录的路径
-current_dir = os.path.dirname(current_script_path)
-
-# 构建commodity.csv文件的绝对路径
-commodity_csv_path = os.path.join(current_dir, 'data', 'commodity.csv')
+commodity_csv_path = r'/apps/projects/obei_data_sai_server/ChatINDUS/data/commodity.csv'
 
 
 class Postgre:
@@ -197,17 +192,11 @@ if __name__ == '__main__':
     #     WHERE CLASS_NAME LIKE %s;
     # """, ('%' + query["品类要求"] + '%',))  
 
-
-
     # 获取满足品类要求的所有记录中前3条记录
     results = cur.fetchall()
     results = results[:3]
     for result in results:
         print(result)
-
-
-
-
 
     cur.close()
     conn.close()
