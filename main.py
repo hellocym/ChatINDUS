@@ -8,8 +8,9 @@ from query.postgre import Postgre
 # os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
 
 def recommend(inp):
-    ext = Extraction()
     db = Postgre()
+    ext = Extraction()
+    
     
     ans = ext.extract(inp)
     ans = json.loads(ans)
@@ -21,8 +22,9 @@ def recommend(inp):
     
 
 if __name__ == "__main__":
-    ext = Extraction()
     db = Postgre()
+    ext = Extraction()
+    
     
     while True:
         inp = input("Input: ")
@@ -38,5 +40,5 @@ if __name__ == "__main__":
         # print(ans)
         records = db.query(ans)
         ans = {**ans, "records": records}
-        # print(records)
+        print(ans)
         

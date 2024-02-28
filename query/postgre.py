@@ -11,7 +11,7 @@ class Postgre:
         os.system("service postgresql start")
         print("Postgres started")
         # delay 5s
-        os.system("sleep 5")
+        os.system("sleep 3")
         self.conn = psycopg2.connect(
             dbname="postgres",
             user="postgres",
