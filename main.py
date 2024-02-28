@@ -15,6 +15,9 @@ def recommend(inp):
     ans = json.loads(ans)
     # print(ans)
     records = db.query(ans)
+    ans = {**ans, "records": records}
+    print(ans)
+    return ans
     
 
 if __name__ == "__main__":
@@ -34,5 +37,6 @@ if __name__ == "__main__":
         ans = json.loads(ans)
         # print(ans)
         records = db.query(ans)
-        print(records)
+        ans = {**ans, "records": records}
+        # print(records)
         
