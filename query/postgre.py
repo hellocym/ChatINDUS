@@ -46,12 +46,11 @@ class Postgre:
         
         self.conn.commit()  # 提交更改
 
-    def query(self, query: str):
+    def query(self, query: dict):
         # query = {"品类要求": xxx, "技术属性要求": {xxx: xxx, xxx: xxx, xxx: xxx, xxx: xxx}}
         # 有时候技术属性要求会出现未知，所以要判断是否存在
         # 筛选
         # convert query to dict
-        query = json.loads(query)
         class_name = query["品类要求"]
         param_dict = query["技术属性要求"]
         param_dict = {k: v for k, v in param_dict.items() if v!="未知"}
@@ -92,8 +91,11 @@ class Postgre:
         #     );
         # """, ('%' + query["品类要求"] + '%', query["技术属性要求"]["内径"], query["技术属性要求"]["外径"], query["技术属性要求"]["宽度"]))
         # cur.execute(sql, ('%' + query["品类要求"] + '%', query["技术属性要求"]["内径"], query["技术属性要求"]["外径"]))
-        for result in self.cur.fetchall():
-            print(result)
+        # for result in self.cur.fetchall():
+        #     print(result)
+        skus = self.cur.fetchall()
+        # 返回所有COMMODITY_CODE
+        return [sku['commodity_code'] for sku in skus]
 
 
 

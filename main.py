@@ -1,4 +1,5 @@
 import os
+import json
 
 from extraction.XVERSE import Extraction
 from query.postgre import Postgre
@@ -6,6 +7,15 @@ from query.postgre import Postgre
 # use hf mirror site
 # os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
 
+def recommend(inp):
+    ext = Extraction()
+    db = Postgre()
+    
+    ans = ext.extract(inp)
+    ans = json.loads(ans)
+    # print(ans)
+    records = db.query(ans)
+    
 
 if __name__ == "__main__":
     ext = Extraction()
@@ -21,6 +31,8 @@ if __name__ == "__main__":
         # print(inp)
         
         ans = ext.extract(inp)
-        print(ans)
-        db.query(ans)
+        ans = json.loads(ans)
+        # print(ans)
+        records = db.query(ans)
+        print(records)
         
