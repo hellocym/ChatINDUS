@@ -1,8 +1,8 @@
 import os
 import json
 
-from extraction.XVERSE import Extraction
-from query.postgre import Postgre
+from .extraction.XVERSE import Extraction
+from .query.postgre import Postgre
 import torch
 
 # use hf mirror site
