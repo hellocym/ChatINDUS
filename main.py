@@ -12,7 +12,7 @@ def recommend(inp):
     db = Postgre()
     ext = Extraction()
     
-    ans = ext.extract(inp)
+    ans = ext.extract(str(inp))
     ans = json.loads(ans)
     # print(ans)
     records = db.query(ans)
