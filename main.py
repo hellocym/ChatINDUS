@@ -12,13 +12,12 @@ def recommend(inp):
     db = Postgre()
     ext = Extraction()
     
-    
     ans = ext.extract(inp)
     ans = json.loads(ans)
     # print(ans)
     records = db.query(ans)
-    ans = {**ans, "records": records}
-    print(ans)
+    ans = {**ans, "推荐商品": records}
+    # print(ans)
     return ans
     
 
@@ -40,7 +39,7 @@ if __name__ == "__main__":
             ans = json.loads(ans)
             # print(ans)
             records = db.query(ans)
-            ans = {**ans, "records": records}
+            ans = {**ans, "推荐商品": records}
             print(ans)
     # release vram while keyboard interrupt
     except KeyboardInterrupt:
