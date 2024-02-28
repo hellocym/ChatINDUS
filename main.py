@@ -3,6 +3,7 @@ import json
 
 from extraction.XVERSE import Extraction
 from query.postgre import Postgre
+import torch
 
 # use hf mirror site
 # os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
@@ -25,20 +26,27 @@ if __name__ == "__main__":
     db = Postgre()
     ext = Extraction()
     
-    
-    while True:
-        inp = input("Input: ")
-        # inp = inp.strip(',')
-        # inp = inp.strip('"')
-        # inp = eval(inp)
-        # inp = [i['user'] for i in inp]
-        # inp = ' '.join(inp)
-        # print(inp)
+    try:
+        while True:
+            inp = input("Input: ")
+            # inp = inp.strip(',')
+            # inp = inp.strip('"')
+            # inp = eval(inp)
+            # inp = [i['user'] for i in inp]
+            # inp = ' '.join(inp)
+            # print(inp)
+            
+            ans = ext.extract(inp)
+            ans = json.loads(ans)
+            # print(ans)
+            records = db.query(ans)
+            ans = {**ans, "records": records}
+            print(ans)
+    # release vram while keyboard interrupt
+    except KeyboardInterrupt:
+        del ext
+        del db
+        print("vram released")
+        print(torch.cuda.memory_summary(device=None, abbreviated=False)
         
-        ans = ext.extract(inp)
-        ans = json.loads(ans)
-        # print(ans)
-        records = db.query(ans)
-        ans = {**ans, "records": records}
-        print(ans)
         
