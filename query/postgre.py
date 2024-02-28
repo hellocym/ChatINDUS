@@ -10,6 +10,8 @@ class Postgre:
     def __init__(self):
         os.system("service postgresql start")
         print("Postgres started")
+        # delay 5s
+        os.system("sleep 5")
         self.conn = psycopg2.connect(
             dbname="postgres",
             user="postgres",
