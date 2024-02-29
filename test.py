@@ -15,6 +15,8 @@ for i in range(len(f)):
     data = {'input': inp}
     response = requests.post(url, json=data)
     result = response.text
+    # result中有\uxxxx的字符，需要转换
+    result = result.encode('utf-8').decode('unicode_escape')
     f.iloc[i, 1] = result
     print(result)
 
