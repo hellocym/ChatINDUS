@@ -16,5 +16,7 @@ for i in range(len(f)):
     response = requests.post(url, json=data)
     result = response.text
     f.iloc[i, 1] = result
+    print(result)
 
+f.to_csv('data/3_test.csv', index=False)
     
