@@ -71,6 +71,9 @@ class Postgre:
         """
         for k, v in param_dict.items():
             # 去除单位
+            if not v:
+                print(param_dict)
+                raise ValueError("技术属性要求中的值不能为空")
             v = v.split(' ')[0]
             sql_query += f"""
                 AND EXISTS (
