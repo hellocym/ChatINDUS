@@ -74,6 +74,8 @@ class Postgre:
             if not v:
                 print(param_dict)
                 raise ValueError("技术属性要求中的值不能为空")
+            if not isinstance(v, str):
+                v = str(v)
             v = v.split(' ')[0]
             sql_query += f"""
                 AND EXISTS (
