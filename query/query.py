@@ -1,6 +1,4 @@
-# given query json, search for the query in data/commodity.csv
-# return the result in json format
-# use gradio for demo
+# gradio 界面
 
 import pandas as pd
 import numpy as np

@@ -6,7 +6,7 @@ import csv
 import os
 import json
 
-
+# 数据
 commodity_csv_path = r'/apps/projects/obei_data_sai_server/ChatINDUS/data/commodity.csv'
 
 
@@ -14,8 +14,7 @@ class Postgre:
     def __init__(self):
         os.system("service postgresql start")
         print("Postgres started")
-        # delay 5s
-        os.system("sleep 3")
+        os.system("sleep 3")  # 防止数据库未启动，等待3秒
         self.conn = psycopg2.connect(
             dbname="postgres",
             user="postgres",
@@ -36,6 +35,9 @@ class Postgre:
             self.load_data()
 
     def load_data(self):
+        '''
+        加载数据
+        '''
         self.cur.execute("""
             CREATE TABLE IF NOT EXISTS commodities (
                 commodity_code VARCHAR PRIMARY KEY,
@@ -53,12 +55,15 @@ class Postgre:
         self.conn.commit()  # 提交更改
 
     def query(self, query: dict):
-        # query = {"品类要求": xxx, "技术属性要求": {xxx: xxx, xxx: xxx, xxx: xxx, xxx: xxx}}
-        # 有时候技术属性要求会出现未知，所以要判断是否存在
-        # 筛选
-        # convert query to dict
+        '''
+        查询
+        '''
+        # query格式： {"品类要求": xxx, "技术属性要求": {xxx: xxx, xxx: xxx, xxx: xxx, xxx: xxx}}
+        
         class_name = query["品类要求"]
         param_dict = query["技术属性要求"]
+
+        # 有时候技术属性要求会出现未知，要处理一下
         param_dict = {k: v for k, v in param_dict.items() if v!="未知"}
         sql_query = f"""
             SELECT * FROM commodities
@@ -77,28 +82,6 @@ class Postgre:
         sql_query += ";"
         
         self.cur.execute(sql_query)
-        # self.cur.execute("""
-        #     SELECT * FROM commodities
-        #     WHERE CLASS_NAME LIKE %s
-        #     AND EXISTS (
-        #         SELECT 1
-        #         FROM jsonb_array_elements(commodity_specific) AS cs(item)
-        #         WHERE item->>'paramName' = '内径' AND item->>'paramValue' = %s
-        #     )
-        #     AND EXISTS (
-        #         SELECT 1
-        #         FROM jsonb_array_elements(commodity_specific) AS cs(item)
-        #         WHERE item->>'paramName' = '外径' AND item->>'paramValue' = %s
-        #     )
-        #     AND EXISTS (
-        #         SELECT 1
-        #         FROM jsonb_array_elements(commodity_specific) AS cs(item)
-        #         WHERE item->>'paramName' = '宽度' AND item->>'paramValue' = %s
-        #     );
-        # """, ('%' + query["品类要求"] + '%', query["技术属性要求"]["内径"], query["技术属性要求"]["外径"], query["技术属性要求"]["宽度"]))
-        # cur.execute(sql, ('%' + query["品类要求"] + '%', query["技术属性要求"]["内径"], query["技术属性要求"]["外径"]))
-        # for result in self.cur.fetchall():
-        #     print(result)
         skus = self.cur.fetchall()
         # 返回所有COMMODITY_CODE
         return [sku['commodity_code'] for sku in skus]
@@ -107,25 +90,28 @@ class Postgre:
 
 
 def Info(*args):
+    '''
+    用黄色输出Info信息
+    '''
     print('\033[93m' + ' '.join([str(arg) for arg in args]) + '\033[0m')
 
 def load_data():
-        cur.execute("""
-            CREATE TABLE IF NOT EXISTS commodities (
-                commodity_code VARCHAR PRIMARY KEY,
-                commodity_name VARCHAR(255),
-                type_gauge TEXT,
-                class_name VARCHAR(255),
-                class_code VARCHAR(50),
-                commodity_specific JSONB
-            )
-        """)
-        
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS commodities (
+            commodity_code VARCHAR PRIMARY KEY,
+            commodity_name VARCHAR(255),
+            type_gauge TEXT,
+            class_name VARCHAR(255),
+            class_code VARCHAR(50),
+            commodity_specific JSONB
+        )
+    """)
+    
 
-        with open(commodity_csv_path, 'r') as f:
-            cur.copy_expert("COPY commodities FROM STDIN WITH CSV HEADER", f)
-        
-        conn.commit()  # 提交更改
+    with open(commodity_csv_path, 'r') as f:
+        cur.copy_expert("COPY commodities FROM STDIN WITH CSV HEADER", f)
+    
+    conn.commit()  # 提交更改
 
 
 if __name__ == '__main__':

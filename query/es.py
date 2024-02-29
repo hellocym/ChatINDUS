@@ -5,14 +5,14 @@ from elasticsearch.helpers import bulk
 import pandas as pd
 
 
-# example data
+# 数据格式
 # COMMODITY_CODE,COMMODITY_NAME,TYPE_GAUGE,CLASS_NAME,CLASS_CODE,COMMODITY_SPECIFIC
 # 200623463928171,瓦轴 ZWZ 深沟球轴承 61040X1M,61040X1M,轴承-滚动轴承-单列深沟球轴承,L130101,"[{""unit"": ""10"", ""modelCode"": ""SX0750"", ""paramName"": ""内径"", ""ifSaleMode"": 1, ""paramValue"": ""200"", ""commodityCode"": ""200623463928171""}, {""unit"": ""10"", ""modelCode"": ""SX0764"", ""paramName"": ""外径"", ""ifSaleMode"": 1, ""paramValue"": ""269.5"", ""commodityCode"": ""200623463928171""}, {""unit"": ""10"", ""modelCode"": ""SX0008"", ""paramName"": ""宽度"", ""ifSaleMode"": 1, ""paramValue"": ""51"", ""commodityCode"": ""200623463928171""}, {""unit"": ""10"", ""modelCode"": ""SX0723"", ""paramName"": ""列数"", ""ifSaleMode"": 1, ""paramValue"": ""1"", ""commodityCode"": ""200623463928171""}, {""unit"": ""10"", ""modelCode"": ""SX1634"", ""paramName"": ""基本额定动载"", ""ifSaleMode"": 1, ""paramValue"": ""91"", ""commodityCode"": ""200623463928171""}, {""unit"": ""10"", ""modelCode"": ""SX1635"", ""paramName"": ""基本额定静载"", ""ifSaleMode"": 1, ""paramValue"": ""109"", ""commodityCode"": ""200623463928171""}, {""modelCode"": ""SX0002"", ""paramName"": ""材质"", ""ifSaleMode"": 1, ""paramValue"": ""10"", ""commodityCode"": ""200623463928171""}, {""modelCode"": ""SX0733"", ""paramName"": ""保持架材质"", ""ifSaleMode"": 1, ""paramValue"": ""20"", ""commodityCode"": ""200623463928171""}, {""modelCode"": ""SX1085"", ""paramName"": ""精度等级"", ""ifSaleMode"": 1, ""paramValue"": ""20"", ""commodityCode"": ""200623463928171""}]"
 
-# while querying, we need to search in the following columns:
+# 需要查找的列
 # COMMODITY_NAME, CLASS_NAME, COMMODITY_SPECIFIC
 
-# example query
+# query格式
 # {
 #     "品类要求": "深沟球轴承",
 #     "技术属性要求": {
@@ -23,7 +23,7 @@ import pandas as pd
 #     }
 # }
 
-# example result
+# 查询结果格式
 # {
 #     "COMMODITY_CODE": "200623463928171",
 # }

@@ -5,18 +5,16 @@ from .extraction.XVERSE import Extraction
 from .query.postgre import Postgre
 import torch
 
-# use hf mirror site
-# os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
 
 def recommend(inp):
-    db = Postgre()
-    ext = Extraction()
+    db = Postgre()  # 加载数据库
+    ext = Extraction()  # 加载模型
     
-    ans = ext.extract(str(inp))
-    ans = json.loads(ans)
+    ans = ext.extract(str(inp))  # 抽取属性信息
+    ans = json.loads(ans)  # str转换为字典
     # print(ans)
-    records = db.query(ans)
-    ans = {**ans, "推荐商品": records}
+    records = db.query(ans)  # 在数据库中query
+    ans = {**ans, "推荐商品": records}  # 添加属性信息
     # print(ans)
     return ans
     
