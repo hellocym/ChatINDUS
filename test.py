@@ -11,7 +11,7 @@ url = 'http://127.0.0.1:7890/demo'
 
 f = pd.read_csv('data/test3.csv')
 for i in range(len(f)):
-    inp = data.iloc[i, 0]
+    inp = f.iloc[i, 0]
     data = {'input': inp}
     response = requests.post(url, json=data)
     result = response.text
